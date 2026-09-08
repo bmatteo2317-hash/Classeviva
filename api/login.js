@@ -21,11 +21,10 @@ export default async function handler(req, res) {
     }
 
     try {
-        // 1. Chiamata di autenticazione alle API Classeviva
+        // 1. Chiamata di autenticazione alle API Classeviva corrette
         const loginResponse = await axios.post('https://web.spaggiari.eu/rest/v1/auth/login', {
-            ident: null,
-            pass: password,
-            uid: username
+            ident: username,
+            pass: password
         }, {
             headers: {
                 'Content-Type': 'application/json',
