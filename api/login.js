@@ -21,6 +21,7 @@ export default async function handler(req, res) {
     }
 
     try {
+        // 1. Chiamata di autenticazione alle API Classeviva
         const loginResponse = await axios.post('https://web.spaggiari.eu/rest/v1/auth/login', {
             ident: null,
             pass: password,
@@ -34,8 +35,14 @@ export default async function handler(req, res) {
         });
 
         const token = loginResponse.data.token;
-        const userId = loginResponse.data.data.release.replace(/\D/g, '');
+        const ident = loginResponse.data.ident;
+        const userId = ident ? ident.replace(/\D/g, '') : '';
 
+        if (!token || !userId) {
+            return res.status(401).json({ success: false, error: 'Credenziali non valide o risposta inattesa da Classeviva.' });
+        }
+
+        // 2. Chiamata per recuperare i voti usando il token e l'ID corretto
         const gradesResponse = await axios.get(`https://web.spaggiari.eu/rest/v1/students/${userId}/grades`, {
             headers: {
                 'Z-Dev-ApiKey': '+zorro+',
@@ -46,6 +53,7 @@ export default async function handler(req, res) {
 
         const voti = gradesResponse.data.grades || [];
         
+        // 3. Calcolo delle statistiche
         let totaleVoti = 0;
         let conteggioVoti = 0;
         let votoMassimo = 0;
@@ -93,7 +101,7 @@ export default async function handler(req, res) {
         console.error("Errore API Spaggiari:", error.response?.data || error.message);
         return res.status(500).json({ 
             success: false, 
-            error: 'Errore di autenticazione o recupero dati da Classeviva.' 
+            error: 'Errore durante il login o il recupero dati. Controlla le credenziali.' 
         });
     }
 }

@@ -1,253 +1,114 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Classeviva Stats</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    color: #0f172a;
-  }
-  .card {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 25px 60px rgba(0,0,0,.25);
-    width: 100%;
-    max-width: 640px;
-    padding: 40px 36px;
-  }
-  h1 { font-size: 28px; margin-bottom: 6px; }
-  .subtitle { color: #64748b; margin-bottom: 28px; font-size: 15px; }
-  label { display: block; font-size: 13px; font-weight: 600; margin: 16px 0 6px; color: #334155; }
-  input {
-    width: 100%;
-    padding: 13px 14px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 15px;
-    outline: none;
-    transition: border .15s, box-shadow .15s;
-  }
-  input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
-  button {
-    width: 100%;
-    margin-top: 24px;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: #2563eb;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background .15s, transform .05s;
-  }
-  button:hover { background: #1d4ed8; }
-  button:active { transform: scale(.99); }
-  button:disabled { background: #93c5fd; cursor: not-allowed; }
-  .error {
-    display: none;
-    margin-top: 16px;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: #b91c1c;
-    padding: 12px 14px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  #loading { display: none; text-align: center; padding: 20px 0 0; color: #475569; }
-  .spinner {
-    width: 36px; height: 36px;
-    border: 4px solid #e2e8f0;
-    border-top-color: #2563eb;
-    border-radius: 50%;
-    margin: 8px auto 12px;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  #results { display: none; }
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 22px 0;
-  }
-  .stat {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-  }
-  .stat.hero { grid-column: span 2; background: #eff6ff; border-color: #bfdbfe; }
-  .stat .label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #64748b; font-weight: 700; }
-  .stat .value { font-size: 30px; font-weight: 800; margin-top: 4px; color: #1e3a8a; }
-  .stat .value.small { font-size: 22px; color: #0f172a; }
-  .subject {
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-  }
-  .subject .name { font-weight: 700; font-size: 15px; }
-  .subject .count { font-size: 12px; color: #64748b; margin-top: 2px; }
-  .badge {
-    min-width: 56px;
-    text-align: center;
-    font-weight: 800;
-    font-size: 18px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: #dcfce7;
-    color: #166534;
-  }
-  .badge.mid { background: #fef9c3; color: #854d0e; }
-  .badge.low { background: #fee2e2; color: #991b1b; }
-  #logoutBtn { background: #f1f5f9; color: #0f172a; margin-top: 16px; }
-  #logoutBtn:hover { background: #e2e8f0; }
-  h2 { font-size: 18px; margin: 8px 0 12px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiche Classeviva</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; color: #333; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 500px; width: 100%; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); box-sizing: border-box; }
+        h1, h2 { text-align: center; color: #0066cc; }
+        label { font-weight: bold; display: block; margin-top: 15px; }
+        input { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; background: #0066cc; color: white; border: none; padding: 12px; margin-top: 20px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #004999; }
+        .error { color: red; background: #ffe6e6; padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center; display: none; }
+        .results { display: none; margin-top: 25px; }
+        .stat-card { background: #ebf3fc; padding: 15px; border-radius: 8px; margin-bottom: 10px; }
+        .materia-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; }
+        .loader { text-align: center; display: none; font-weight: bold; color: #666; margin-top: 15px; }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <div id="loginView">
-      <h1>Classeviva Stats</h1>
-      <p class="subtitle">Accedi con le tue credenziali Classeviva per vedere medie e statistiche dei voti.</p>
-      <form id="loginForm">
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text" autocomplete="username" placeholder="es. S1234567" required />
+
+<div class="container">
+    <h1>📊 Statistiche Scuola</h1>
+    
+    <!-- Modulo di Login -->
+    <div id="login-form">
+        <label for="username">Username ID (es. s1234567)</label>
+        <input type="text" id="username" placeholder="es. s1234567...">
+        
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="La tua password" required />
-        <button id="submitBtn" type="submit">Accedi e calcola medie</button>
-      </form>
-      <div class="error" id="errorBox"></div>
-      <div id="loading">
-        <div class="spinner"></div>
-        <p>Accesso in corso e calcolo delle medie...</p>
-      </div>
+        <input type="password" id="password" placeholder="La tua password...">
+        
+        <button onclick="caricaDati()">Visualizza Statistiche</button>
+        <div id="loader" class="loader">Elaborazione dati in corso...</div>
+        <div id="error-box" class="error"></div>
     </div>
 
-    <div id="results">
-      <h1>I tuoi risultati</h1>
-      <p class="subtitle">Statistiche calcolate dai voti su Classeviva.</p>
-      <div class="stats-grid">
-        <div class="stat hero">
-          <div class="label">Media generale</div>
-          <div class="value" id="mediaGenerale">-</div>
+    <!-- Schermata Risultati -->
+    <div id="results" class="results">
+        <h2>I tuoi Risultati</h2>
+        <div class="stat-card">
+            <p><strong>Media Generale:</strong> <span id="media-gen" style="font-size: 20px; color: #0066cc;"></span></p>
+            <p>• Voti totali analizzati: <span id="voti-tot"></span></p>
+            <p>• Voto più alto: <span id="voto-max"></span> | Voto più basso: <span id="voto-min"></span></p>
         </div>
-        <div class="stat">
-          <div class="label">Voti totali</div>
-          <div class="value small" id="votiTotali">-</div>
-        </div>
-        <div class="stat">
-          <div class="label">Max / Min</div>
-          <div class="value small" id="maxMin">-</div>
-        </div>
-      </div>
-      <h2>Dettaglio per materia</h2>
-      <div id="materie"></div>
-      <button id="logoutBtn" type="button">Torna al login</button>
+        
+        <h3>Dettaglio per Materia</h3>
+        <div id="lista-materie"></div>
+        <button onclick="window.location.reload()" style="background: #666;">Indietro</button>
     </div>
-  </div>
+</div>
 
 <script>
-  const form = document.getElementById('loginForm');
-  const errorBox = document.getElementById('errorBox');
-  const loading = document.getElementById('loading');
-  const submitBtn = document.getElementById('submitBtn');
-  const loginView = document.getElementById('loginView');
-  const results = document.getElementById('results');
+async function caricaDati() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    const errorBox = document.getElementById('error-box');
+    const loader = document.getElementById('loader');
 
-  function showError(msg) {
-    errorBox.textContent = msg;
-    errorBox.style.display = 'block';
-  }
-  function hideError() {
     errorBox.style.display = 'none';
-    errorBox.textContent = '';
-  }
-  function badgeClass(media) {
-    if (media >= 7) return 'badge';
-    if (media >= 6) return 'badge mid';
-    return 'badge low';
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    hideError();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value;
-    if (!username || !password) {
-      showError('Inserisci username e password.');
-      return;
+    if(!user || !pass) {
+        errorBox.innerText = "Inserisci sia l'username che la password.";
+        errorBox.style.display = 'block';
+        return;
     }
-    loading.style.display = 'block';
-    submitBtn.disabled = true;
+
+    loader.style.display = 'block';
 
     try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.successo) {
-        throw new Error(data.errore || 'Errore durante il login.');
-      }
-      const d = data.dati;
-      document.getElementById('mediaGenerale').textContent = d.mediaGenerale;
-      document.getElementById('votiTotali').textContent = d.votiTotali;
-      document.getElementById('maxMin').textContent = d.votoMax + ' / ' + d.votoMin;
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: user, password: pass })
+        });
 
-      const materieEl = document.getElementById('materie');
-      materieEl.innerHTML = '';
-      d.mediePerMateria.forEach((m) => {
-        const div = document.createElement('div');
-        div.className = 'subject';
-        const mediaArrotondata = Math.round(m.media * 100) / 100;
-        div.innerHTML =
-          '<div><div class="name"></div><div class="count"></div></div>' +
-          '<div class="' + badgeClass(mediaArrotondata) + '">' + mediaArrotondata + '</div>';
-        div.querySelector('.name').textContent = m.materia;
-        div.querySelector('.count').textContent = m.numeroVoti + (m.numeroVoti === 1 ? ' voto' : ' voti');
-        materieEl.appendChild(div);
-      });
+        const data = await response.json();
+        loader.style.display = 'none';
 
-      loginView.querySelector('form').style.display = 'none';
-      document.querySelector('#loginView h1').style.display = 'none';
-      document.querySelector('#loginView .subtitle').style.display = 'none';
-      loading.style.display = 'none';
-      loginView.style.display = 'none';
-      results.style.display = 'block';
+        if (!data.success) {
+            errorBox.innerText = data.error || "Errore sconosciuto.";
+            errorBox.style.display = 'block';
+            return;
+        }
+
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        
+        document.getElementById('media-gen').innerText = data.statistiche.mediaGenerale;
+        document.getElementById('voti-tot').innerText = data.statistiche.conteggioVoti;
+        document.getElementById('voto-max').innerText = data.statistiche.votoMassimo;
+        document.getElementById('voto-min').innerText = data.statistiche.votoMinimo;
+
+        const listaHtml = document.getElementById('lista-materie');
+        listaHtml.innerHTML = '';
+        data.medieMaterie.forEach(m => {
+            listaHtml.innerHTML += `
+                <div class="materia-item">
+                    <span><strong>${m.materia}</strong> (${m.votiTotali} voti)</span>
+                    <span style="font-weight: bold; color: ${m.media >= 6 ? 'green' : 'red'}">${m.media}</span>
+                </div>
+            `;
+        });
+
     } catch (err) {
-      showError(err.message);
-    } finally {
-      loading.style.display = 'none';
-      submitBtn.disabled = false;
+        loader.style.display = 'none';
+        errorBox.innerText = "Errore di connessione di rete.";
+        errorBox.style.display = 'block';
     }
-  });
-
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    results.style.display = 'none';
-    loginView.style.display = 'block';
-    loginView.querySelector('form').style.display = 'block';
-    document.querySelector('#loginView h1').style.display = 'block';
-    document.querySelector('#loginView .subtitle').style.display = 'block';
-    form.reset();
-    hideError();
-  });
+}
 </script>
 </body>
 </html>
